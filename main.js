@@ -88,3 +88,89 @@ const showAllCards = () => {
 };
 //this line just does exactly what it says, calls all the cards when not being filtered. 
 showAllCards();
+
+
+const sortForm = () => {
+  let domString = ""
+
+    domString += `
+  <form id="sort-form">
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" />
+  </div>
+  <div class="mb-3">
+    <label for="house" class="form-label">House</label>
+    <input type="text" class="form-control" id="house" aria-describedby="houseHelp" />
+  </div>
+  <div class="mb-3">
+    <label for="imageUrl" class="form-label">Image URL</label>
+    <input type="text" class="form-control" id="imageUrl" aria-describedby="imageUrlHelp" />
+  </div>
+  <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+  <button type="button" class="btn btn-secondary" id="close-btn" >Close</button>
+</form>`;
+
+
+
+const formContainer = document.querySelector(".modal-body");
+formContainer.innerHTML = domString;
+
+  
+  const submitButton = document.querySelector("#submit-btn");
+  const closeButton = document.querySelector("#close");
+
+const addStudent = (e) => {
+  e.preventDefault();
+
+  const nameInput = document.querySelector("#name");
+  const houseInput = document.querySelector("#house");
+  const imageUrlInput = document.querySelector("#imageUrl");
+
+
+  if (
+    nameInput.value.trim() === "" ||
+    houseInput.value.trim() === "" ||
+    imageUrlInput.value.trim() === ""
+  ) {
+
+    alert("Please fill out all fields before submitting.");
+    
+  
+  }
+
+  const sortObj = {
+    id: sorting.length + 1,
+    name: nameInput.value,
+    house: houseInput.value,
+    imageUrl: imageUrlInput.value,
+  };
+
+  sorting.push(sortObj);
+  cardsOnDom(sorting);
+
+
+  nameInput.value = "";
+  houseInput.value = "";
+  imageUrlInput.value = "";
+  
+
+ 
+  document.querySelector("#sort-form").classList.add("d-none");
+  alert("Student Added!");
+  
+};
+
+submitButton.addEventListener("click", addStudent);
+closeButton.addEventListener("click", () => {
+  
+});
+
+
+};
+
+const showFormbutton = document.getElementById("add-student-button");
+showFormbutton.addEventListener("click", (e) => {
+  console.log("add student button clicked");
+  sortForm();
+});
