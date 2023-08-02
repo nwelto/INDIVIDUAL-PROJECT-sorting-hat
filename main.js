@@ -67,14 +67,14 @@ const cardsOnDom = (filtered) => {
     <div class="col">
      <div class="card text-center h-100">
       <h5 class="card-header">${sorting.name}</h5>
-      <div class="card-body">
-        <img src=${sorting.imageUrl} class="card-img" alt=${sorting.name}>
+      <div class="card-img-container">
+        <img src=${sorting.imageUrl} class="card-img-top" alt=${sorting.name}>
           <p class="card-text">
             ${sorting.house} 
           </p>
       </div>
-      <div class="card-footer ${sorting.house}"></div>
-      <button type="button" id="delete-btn-sorting--${sorting.id}">Expel</button>
+      <div class="card-footer ${sorting.house} footer-style"></div>
+      <button type="button" id="expel-btn--${sorting.id}" class= "btn btn-sm btn-danger expel-button" style="width: 70px; height: 30px;">Expel</button>
      </div>
     </div>`;
   };
@@ -90,87 +90,97 @@ const showAllCards = () => {
 showAllCards();
 
 
-const sortForm = () => {
-  let domString = ""
+// this function resets the form after it is submitted
+const resetForm = () => {
+  const nameInput = document.querySelector("#name");
+  const houseInput = document.querySelector("#house");
+  const imageUrlInput = document.querySelector("#imageUrl");
+  nameInput.value = "";
+  houseInput.value = "";
+  imageUrlInput.value = "";
+};
 
-    domString += `
-  <form id="sort-form">
-  <div class="mb-3">
-    <label for="name" class="form-label">Name</label>
-    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" />
-  </div>
-  <div class="mb-3">
-    <label for="house" class="form-label">House</label>
-    <input type="text" class="form-control" id="house" aria-describedby="houseHelp" />
-  </div>
-  <div class="mb-3">
-    <label for="imageUrl" class="form-label">Image URL</label>
-    <input type="text" class="form-control" id="imageUrl" aria-describedby="imageUrlHelp" />
-  </div>
-  <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
-  <button type="button" class="btn btn-secondary" id="close-btn" >Close</button>
-</form>`;
-
-
-
-const formContainer = document.querySelector(".modal-body");
-formContainer.innerHTML = domString;
-
-  
-  const submitButton = document.querySelector("#submit-btn");
-  const closeButton = document.querySelector("#close");
-
+// this function takes the name,house, and imgurl from the form and adds a new card with tha tinformation to the DOM.
 const addStudent = (e) => {
   e.preventDefault();
-
   const nameInput = document.querySelector("#name");
   const houseInput = document.querySelector("#house");
   const imageUrlInput = document.querySelector("#imageUrl");
 
+  const nameValue = nameInput.value.trim();
+  const houseValue = houseInput.value.trim();
+  const imageUrlValue = imageUrlInput.value.trim();
 
-  if (
-    nameInput.value.trim() === "" ||
-    houseInput.value.trim() === "" ||
-    imageUrlInput.value.trim() === ""
-  ) {
-
+  if (nameValue === "" || houseValue === "" || imageUrlValue === "") {
     alert("Please fill out all fields before submitting.");
-    
-  
+    return;
   }
 
   const sortObj = {
     id: sorting.length + 1,
-    name: nameInput.value,
-    house: houseInput.value,
-    imageUrl: imageUrlInput.value,
+    name: nameValue,
+    house: houseValue,
+    imageUrl: imageUrlValue,
   };
 
   sorting.push(sortObj);
   cardsOnDom(sorting);
 
+  resetForm();
 
-  nameInput.value = "";
-  houseInput.value = "";
-  imageUrlInput.value = "";
-  
-
- 
-  document.querySelector("#sort-form").classList.add("d-none");
+  const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
+  modal.hide();
   alert("Student Added!");
-  
 };
 
+const expelStudent = (e) => {
+  if (e.target.id.startsWith("expel-btn")) {
+    const id = parseInt(e.target.id.split("--")[1]);
+    const studentIndex = sorting.findIndex((student) => student.id === id);
+    if (studentIndex !== -1){
+      sorting.splice(studentIndex, 1);
+      cardsOnDom(sorting);
+    }
+  }
+};
+
+sortHat.addEventListener("click", expelStudent);
+
+
+//this section actually submits the form with all of the information filled out and adds a new student to the sorting array and updates the dom.  it also gives you a message if you try to submit before filling out the fields it also gives you an alert when the student is added!
+const submitButton = document.querySelector("#submit-btn");
 submitButton.addEventListener("click", addStudent);
-closeButton.addEventListener("click", () => {
-  
-});
 
-
-};
-
-const showFormbutton = document.getElementById("add-student-button");
-showFormbutton.addEventListener("click", (e) => {
+const showFormButton = document.getElementById("add-student-button");
+showFormButton.addEventListener("click", () => {
   console.log("add student button clicked");
-  sortForm();
+  const formContainer = document.querySelector(".modal-body");
+  let domString = "";
+  domString += `
+    <form id="sort-form">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" aria-describedby="nameHelp" />
+      </div>
+      <div class="mb-3">
+        <label for="house" class="form-label">House</label>
+        <input type="text" class="form-control" id="house" aria-describedby="houseHelp" />
+      </div>
+      <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image URL</label>
+        <input type="text" class="form-control" id="imageUrl" aria-describedby="imageUrlHelp" />
+      </div>
+    </form>`;
+  formContainer.innerHTML = domString;
+
+  const closeButton = document.querySelector("#close-btn");
+  closeButton.addEventListener("click", () => {
+    const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
+    modal.hide();
+    resetForm();
+    
+  });
+
+  const submitButton = document.querySelector("#submit-form-btn");
+  submitButton.addEventListener("click", addStudent);
 });

@@ -1,0 +1,13 @@
+
+
+body{
+  background-color: beige;
+}
+
+.card-img-top {
+  height: 600px; 
+  object-fit: cover; 
+}
+.footer-style {
+  padding: 0rem; 
+}
