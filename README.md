@@ -15,10 +15,16 @@ This project is for people who just want to have fun by finding out what random 
 Features:
 
 Buttons to sort by each house.
-An expel button to send any student to Voldemort's army.
-A field to enter your name and an image you would like added to your student card.
+With a field to enter your Name and Img to be created once you are sorted.
+![](2023-08-04-17-19-19.png)
 
+Followed by the 2 Categories of Students, the ones who are active and the ones who have been expelled and joined Voldemort's army.
 
+![](2023-08-04-17-20-45.png)
+
+Finally each card has a button that will Expel them from Hogwarts and allow them to join Voldemort.
+
+![](2023-08-04-17-21-58.png)
 
 
 

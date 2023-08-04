@@ -110,6 +110,7 @@ const resetForm = () => {
 };
 
 const houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
+const errorField = document.querySelector("#error");
 
 
 // this function takes the name and imgurl and then randomly sorts it into a house
@@ -123,7 +124,10 @@ const addStudent = (e) => {
   const imageUrlValue = imageUrlInput.value.trim();
 
   if (nameValue === "" || imageUrlValue === "") {
+    errorField.innerHTML = "Please enter both a name and an image URL";
     return;
+  } else {
+    errorField.innerHTML = "";
   }
 
   const randomHouseIndex = Math.floor(Math.random() * houses.length);
@@ -140,6 +144,9 @@ const addStudent = (e) => {
   resetForm();
   cardsOnDom(sorting);
 };
+
+
+
 //this part is the event listeners for the buttons "sort" and "expel" they take the id's we setup in html and make them functional by calling the addStudent function or the expelStudent function to expel them.
 const sortButton = document.querySelector("#sort-btn");
 sortButton.addEventListener("click", addStudent);
