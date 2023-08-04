@@ -35,7 +35,7 @@ const sorting = [
 //this line allows me to select the "cards" element in my index.html.  it also sets up sortHat to store the reference to the HTML element "cards".  I can now use sortHat to manipulate access to "cards" like with my cardsOnDom and innerHTML.
 const sortHat = document.querySelector("#cards");
 
-//this line uses filterSorting as a function that filters the "sorting" array to find objects with a specific "house" property.  then uses the cardsOnDom function to display cards filtered on the web page by the specific house.
+//this line uses filterSorting as a function that filters the "sorting" array to find objects with a specific "house" property.  then uses the cardsOnDom function to display cards filtered on the web page by the specific house. this uses the "filter" array to achieve a loop other than "for"
 const filterSorting = (house) => {
   const filteredSorting = sorting.filter((sort) => sort.house === house)
   cardsOnDom(filteredSorting);
@@ -60,10 +60,12 @@ filterContainer.addEventListener("click", (e) => {
 //cardsOndom function is generating HTML dynamically using the data from the javascript array "filtered" and creates cards based on that data.  name, house, imgUrl.
 const cardsOnDom = (filtered) => {
 
-  let domString = "";
+
+  let activeStudentsdom = "";
+  let expelledStudentsDom = "";
   for (const sorting of filtered) {
 
-    domString += `
+    const cardHtml = `
     <div class="col">
      <div class="card text-center h-100">
       <h5 class="card-header">${sorting.name}</h5>
@@ -77,9 +79,18 @@ const cardsOnDom = (filtered) => {
       <button type="button" id="expel-btn--${sorting.id}" class= "btn btn-sm btn-danger expel-button" style="width: 70px; height: 30px;">Expel</button>
      </div>
     </div>`;
+
+    if(sorting.isExpelled) {
+      expelledStudentsDom += cardHtml;
+    }else {
+      activeStudentsdom += cardHtml;
+    }
+
   };
 
-  sortHat.innerHTML = domString;
+  sortHat.innerHTML = activeStudentsdom;
+  const expelledContainer = document.querySelector("#expelled-cards");
+  expelledContainer.innerHTML = expelledStudentsDom;
 
 };
 //on this one i used the arrow function syntax to create "showAllCards" that uses the data from the "sorting" array.  then i used cardsOnDom to pass the "sorting" array as an argument. 
@@ -90,97 +101,62 @@ const showAllCards = () => {
 showAllCards();
 
 
-// this function resets the form after it is submitted
+// this function resets the form after it is submitted, clearing the name and imageurl fields.
 const resetForm = () => {
   const nameInput = document.querySelector("#name");
-  const houseInput = document.querySelector("#house");
   const imageUrlInput = document.querySelector("#imageUrl");
   nameInput.value = "";
-  houseInput.value = "";
   imageUrlInput.value = "";
 };
 
-// this function takes the name,house, and imgurl from the form and adds a new card with tha tinformation to the DOM.
+const houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
+
+
+// this function takes the name and imgurl and then randomly sorts it into a hosue
 const addStudent = (e) => {
   e.preventDefault();
+  console.log("adding student");
   const nameInput = document.querySelector("#name");
-  const houseInput = document.querySelector("#house");
   const imageUrlInput = document.querySelector("#imageUrl");
 
   const nameValue = nameInput.value.trim();
-  const houseValue = houseInput.value.trim();
   const imageUrlValue = imageUrlInput.value.trim();
 
-  if (nameValue === "" || houseValue === "" || imageUrlValue === "") {
-    alert("Please fill out all fields before submitting.");
+  if (nameValue === "" || imageUrlValue === "") {
     return;
   }
+
+  const randomHouseIndex = Math.floor(Math.random() * houses.length);
+  const randomHouse = houses[randomHouseIndex];
 
   const sortObj = {
     id: sorting.length + 1,
     name: nameValue,
-    house: houseValue,
+    house: randomHouse,
     imageUrl: imageUrlValue,
   };
 
   sorting.push(sortObj);
-  cardsOnDom(sorting);
-
   resetForm();
-
-  const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
-  modal.hide();
-  alert("Student Added!");
+  cardsOnDom(sorting);
 };
+//this part is the event listeners for the buttons "sort" and "expel" they take the id's we setup in html and make them functional by calling the addStudent function or the expelStudent function to expel them.
+const sortButton = document.querySelector("#sort-btn");
+sortButton.addEventListener("click", addStudent);
 
 const expelStudent = (e) => {
   if (e.target.id.startsWith("expel-btn")) {
     const id = parseInt(e.target.id.split("--")[1]);
-    const studentIndex = sorting.findIndex((student) => student.id === id);
-    if (studentIndex !== -1){
-      sorting.splice(studentIndex, 1);
-      cardsOnDom(sorting);
-    }
-  }
+    toggleExpulsion(id);
+    cardsOnDom(sorting);
+    } 
 };
 
+const toggleExpulsion = (id) => {
+  const studentIndex = sorting.findIndex((student) => student.id === id);
+  if(studentIndex !== -1) {
+    sorting[studentIndex].isExpelled = !sorting[studentIndex].isExpelled;
+  }
+}
+
 sortHat.addEventListener("click", expelStudent);
-
-
-//this section actually submits the form with all of the information filled out and adds a new student to the sorting array and updates the dom.  it also gives you a message if you try to submit before filling out the fields it also gives you an alert when the student is added!
-const submitButton = document.querySelector("#submit-btn");
-submitButton.addEventListener("click", addStudent);
-
-const showFormButton = document.getElementById("add-student-button");
-showFormButton.addEventListener("click", () => {
-  console.log("add student button clicked");
-  const formContainer = document.querySelector(".modal-body");
-  let domString = "";
-  domString += `
-    <form id="sort-form">
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" aria-describedby="nameHelp" />
-      </div>
-      <div class="mb-3">
-        <label for="house" class="form-label">House</label>
-        <input type="text" class="form-control" id="house" aria-describedby="houseHelp" />
-      </div>
-      <div class="mb-3">
-        <label for="imageUrl" class="form-label">Image URL</label>
-        <input type="text" class="form-control" id="imageUrl" aria-describedby="imageUrlHelp" />
-      </div>
-    </form>`;
-  formContainer.innerHTML = domString;
-
-  const closeButton = document.querySelector("#close-btn");
-  closeButton.addEventListener("click", () => {
-    const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
-    modal.hide();
-    resetForm();
-    
-  });
-
-  const submitButton = document.querySelector("#submit-form-btn");
-  submitButton.addEventListener("click", addStudent);
-});
