@@ -60,7 +60,7 @@ filterContainer.addEventListener("click", (e) => {
 //cardsOndom function is generating HTML dynamically using the data from the javascript array "filtered" and creates cards based on that data.  name, house, imgUrl.
 const cardsOnDom = (filtered) => {
 
-
+//this part creates 2 variables, one for the active students and one for the expelled students.  it uses those variables to store strings that we are dynamically generating from the HTML for the content of the expelled and active students.
   let activeStudentsdom = "";
   let expelledStudentsDom = "";
   for (const sorting of filtered) {
@@ -112,7 +112,7 @@ const resetForm = () => {
 const houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
 
 
-// this function takes the name and imgurl and then randomly sorts it into a hosue
+// this function takes the name and imgurl and then randomly sorts it into a house
 const addStudent = (e) => {
   e.preventDefault();
   console.log("adding student");

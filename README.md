@@ -1,3 +1,31 @@
+Name:  Sorting Hat
+
+Sorting hat is designed to allow the user to create their own Potterverse card and get randomly sorted into a house.  It also allows user to expel any student into Voldemort's army.
+
+wireframe "https://www.figma.com/file/gOMz4poqAALcSSwumvQNBX/Untitled?type=design&node-id=0%3A1&mode=design&t=hDVUWpZkEqwBOQO6-1"
+
+Data flow chart: "https://dbdiagram.io/d/64c5372902bd1c4a5ee81c7c"
+
+Project board: "https://github.com/users/nwelto/projects/1/views/1"
+
+This project was to help show our understanding of Arrays so far.  I have added comments for each function to show what I learned as I was doing the project.  
+
+This project is for people who just want to have fun by finding out what random Hogwarts house they will be placed into.  As well as being able to join Voldemort's army if desired. 
+
+Features:
+
+Buttons to sort by each house.
+An expel button to send any student to Voldemort's army.
+A field to enter your name and an image you would like added to your student card.
+
+
+
+
+
+
+
+
+
 # Sorting Hat
 
 ## Goals
@@ -54,4 +82,3 @@ Think of a way you can expel students without just hiding those divs on the page
 ## Optional Bonus
 - House Colors: The color of the student's card changes depending on which house they were sorted.
 - Card Sorting/Ordering: Sort the student cards by some criteria (i.e. alphabetically by name, by house)
-
