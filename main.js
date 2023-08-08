@@ -4,31 +4,31 @@ const sorting = [
     id: 1,
     name: "Harry",
     house: "Gryffindor",
-    imageUrl: "https://images.ctfassets.net/usf1vwtuqyxm/3SQ3X2km8wkQIsQWa02yOY/8801d7055a3e99dae8e60f54bb4b1db8/HarryPotter_WB_F4_HarryPotterMidshot_Promo_080615_Port.jpg?w=914&q=70&fm=jpg"
+
   },
   {
     id: 2,
     name: "Newt",
     house: "Hufflepuff",
-    imageUrl: "https://www.michigandaily.com/wp-content/uploads/2022/04/fantastic-beasts-copy.jpg",
+ 
   },
   {
     id: 3,
     name: "Terry",
     house: "Ravenclaw",
-    imageUrl: "https://topicimages.mrowl.com/large/lauren/harry_potter/enter_the_wizarding_world/dd_organizations_/dumbledores_army/terry_boot_1.jpg",
+  
   },
   {
     id: 4,
     name: "Draco",
     house: "Slytherin",
-    imageUrl: "https://cdn.europosters.eu/image/750/wall-murals/harry-potter-draco-malfoy-i114410.jpg",
+   
   },
   {
     id: 5,
     name: "Ron",
     house: "Gryffindor",
-    imageUrl: "https://images.ctfassets.net/usf1vwtuqyxm/1u3RmbxLrGMysu0Smacesu/43b7405e95859ba08ea646dc16fa722e/WB_F3_Scabbers_RonClutchesScabbersOnGround_C608-13_UP_HPE3.jpg?fm=jpg&q=70&w=2560",
+
   }
 ];
 
@@ -70,7 +70,7 @@ const cardsOnDom = (filtered) => {
      <div class="card text-center h-100">
       <h5 class="card-header">${sorting.name}</h5>
       <div class="card-img-container">
-        <img src=${sorting.imageUrl} class="card-img-top" alt=${sorting.name}>
+        <alt=${sorting.name}>
           <p class="card-text">
             ${sorting.house} 
           </p>
@@ -104,9 +104,9 @@ showAllCards();
 // this function resets the form after it is submitted, clearing the name and imageurl fields.
 const resetForm = () => {
   const nameInput = document.querySelector("#name");
-  const imageUrlInput = document.querySelector("#imageUrl");
+  
   nameInput.value = "";
-  imageUrlInput.value = "";
+ 
 };
 
 const houses = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
@@ -118,12 +118,12 @@ const addStudent = (e) => {
   e.preventDefault();
   console.log("adding student");
   const nameInput = document.querySelector("#name");
-  const imageUrlInput = document.querySelector("#imageUrl");
+ 
 
   const nameValue = nameInput.value.trim();
-  const imageUrlValue = imageUrlInput.value.trim();
+ 
 
-  if (nameValue === "" || imageUrlValue === "") {
+  if (nameValue === "") {
     errorField.innerHTML = "Please enter both a name and an image URL";
     return;
   } else {
@@ -137,7 +137,7 @@ const addStudent = (e) => {
     id: sorting.length + 1,
     name: nameValue,
     house: randomHouse,
-    imageUrl: imageUrlValue,
+    
   };
 
   sorting.push(sortObj);
